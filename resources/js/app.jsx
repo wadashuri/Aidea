@@ -2,15 +2,15 @@ import './bootstrap';
 import Alpine from 'alpinejs';
 import React from "react";
 import { createRoot } from "react-dom/client";
-import ExampleComponent from "./components/ExampleComponent";
+import BlockNote from "./components/BlockNote/Editor";
 
 // Alpine.jsの初期化
 window.Alpine = Alpine;
 Alpine.start();
 
 // Reactコンポーネントのレンダリング
-const container = document.getElementById("example");
-if (container) {
-    const root = createRoot(container);
-    root.render(<ExampleComponent />);
+const blockNoteId = document.getElementById("blockNote");
+if (blockNoteId) {
+    const root = createRoot(blockNoteId);
+    root.render(<BlockNote />);
 }

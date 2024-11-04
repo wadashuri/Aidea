@@ -18,6 +18,9 @@
         "vite": "^5.0"
     },
     "dependencies": {
+        "@blocknote/core": "^0.18.0",
+        "@blocknote/mantine": "^0.18.1",
+        "@blocknote/react": "^0.18.1",
         "react": "^18.3.1",
         "react-dom": "^18.3.1"
     }
