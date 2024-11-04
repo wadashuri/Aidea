@@ -5,6 +5,7 @@ build:
 
 up:
 	$(SAIL) up -d
+	npm run dev
 
 down:
 	$(SAIL) down
