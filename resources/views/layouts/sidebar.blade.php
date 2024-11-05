@@ -8,6 +8,6 @@
         </span>
     </div>
     <div class="h-full">
-        <div id="memoList" class="mt-6"></div>
+        <ul id="memoIndex" class="mt-6"></ul>
     </div>
 </div>
