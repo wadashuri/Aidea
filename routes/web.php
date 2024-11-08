@@ -17,6 +17,10 @@ Route::middleware('auth')->group(function () {
         Route::patch('/profile', 'update')->name('profile.update');
         Route::delete('/profile', 'destroy')->name('profile.destroy');
     });
+
+    Route::group(['controller' => Controllers\MemoController::class], function () {
+        Route::get('/memo', 'index')->name('memo.index');
+    });
 });
 
 require __DIR__.'/auth.php';
