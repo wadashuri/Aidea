@@ -18,4 +18,14 @@ interface MemoInterface
      * @return array
      */
     public function getMemo(int $loginUserId, string $memoId): array;
+
+    /**
+     * メモを作成
+     * @param int|null $memoId
+     * @param int $loginUserId
+     * @param string|null $title
+     * @param string|null $content
+     * @return array
+     */
+    public function saveMemo(int|null $memoId, int $loginUserId, string|null $title, string|null $content): array;
 }

@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\UseCases\MemoUseCase;
 use App\UseCases\MemoShowUseCase;
+use App\UseCases\MemoSaveUseCase;
 use App\Http\Resources\MemoCollection;
+use App\Http\Resources\MemoResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -30,7 +33,19 @@ class MemoController extends Controller
     public function show(Request $request, MemoShowUseCase $useCase): Response
     {
         return Inertia::render('Memo/Show',[
-            'memo' => $useCase->execute($request->memoId ?? ''),
+            'memo' => new MemoResource($useCase->execute($request?->memoId)),
         ]); 
+    }
+
+    /**
+     * メモ作成
+     * @return void
+     * @param MemoSaveUseCase $useCase
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function store(MemoSaveUseCase $useCase): \Illuminate\Http\RedirectResponse
+    {
+        $memo = $useCase->execute();
+        return Redirect::route('memo.show', ['memoId' => $memo['id']]);
     }
 }
