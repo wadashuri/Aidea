@@ -5,17 +5,8 @@ import { route } from 'ziggy-js';
 function Memos() {
     const [data, setData] = useState([]);
 
-    const fetchData = async () => {
-        try {
-            const result = await FetchAll(route('memo.index'));
-            setData(result.memos || []);
-        } catch (error) {
-            console.error("Error loading data", error);
-        }
-    };
-
     useEffect(() => {
-        fetchData();
+        FetchAll(route('memo.index')).then(setData);
     }, []);
 
     return (
