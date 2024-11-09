@@ -4,6 +4,7 @@ import Sidebar from '@/Layouts/Sidebar';
 import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
+import { Inertia } from '@inertiajs/inertia';
 import { usePage, useForm } from '@inertiajs/react';
 import { useState } from 'react';
 
@@ -15,7 +16,6 @@ export default function AuthenticatedLayout({ header, children }) {
 
     const { 
         delete: destroy,
-        post,
      } = useForm({});
 
     return (
@@ -34,7 +34,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                 <span className="mx-2">|</span>
                                 <MemoLogo 
                                     className="size-6" 
-                                    onClick={() => post(route('memo.store'))}
+                                    onClick={() => Inertia.post(route('memo.store'))}// TODO: useFormを使うように修正
                                 />
                                 </div>
     
