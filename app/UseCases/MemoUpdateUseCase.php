@@ -4,7 +4,7 @@ namespace App\UseCases;
 use App\Contracts\UserInterface;
 use App\Contracts\MemoInterface;
 
-class MemoSaveUseCase
+class MemoUpdateUseCase
 {
     public function __construct(
         private readonly UserInterface $userRepository,
@@ -12,13 +12,13 @@ class MemoSaveUseCase
     ) {
     }
 
-    public function execute()
+    public function execute(array $params): array
     {
         return $this->memoRepository->saveMemo(
-            memoId: null,
+            memoId: $params['memoId'],
             loginUserId: $this->userRepository->getLoginUser()['id'],
-            title: null,
-            content: null
+            title: $params['title'],
+            content: json_encode($params['content']),
         );
     }
 }
