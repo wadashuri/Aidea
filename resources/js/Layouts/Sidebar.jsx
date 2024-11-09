@@ -15,8 +15,8 @@ function Sidebar() {
             <div className="h-full mt-6">
                 <ul>
                     {data.map((memo) => (
-                        <Link href={route('memo.show', {memoId : memo.id})}>
-                            <li key={memo.id} className="px-4 py-2 text-white hover:text-white hover:bg-gray-700">
+                        <Link key={memo.id} href={route('memo.show', {memoId : memo.id})}>
+                            <li className="px-4 py-2 text-white hover:text-white hover:bg-gray-700">
                                 {memo.title || "新規メモ"}
                             </li>
                         </Link>
