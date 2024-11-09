@@ -1,10 +1,12 @@
 import MemoLogo from '@/Components/MemoLogo';
+import DeleteLogo from '@/Components/DeleteLogo';
 import Sidebar from '@/Layouts/Sidebar';
 import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { usePage } from '@inertiajs/react';
 import { Inertia } from '@inertiajs/inertia';
+import { useForm } from '@inertiajs/react';
 import { useState } from 'react';
 
 export default function AuthenticatedLayout({ header, children }) {
@@ -12,6 +14,8 @@ export default function AuthenticatedLayout({ header, children }) {
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
+
+    const { delete: destroy } = useForm({});
 
     return (
         <div className="h-screen flex bg-gray-100">
@@ -22,6 +26,11 @@ export default function AuthenticatedLayout({ header, children }) {
                         <div className="flex h-16 justify-between">
                             <div className="flex">
                                 <div className="flex shrink-0 items-center">
+                                <DeleteLogo
+                                    className="size-6"
+                                    onClick={() => destroy(route('memo.destroy', { memoId: route().params.memoId }))}
+                                    />
+                                <span className="mx-2">|</span>
                                 <MemoLogo 
                                     className="size-6" 
                                     onClick={() => Inertia.post(route('memo.store'))}

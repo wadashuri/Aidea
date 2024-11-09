@@ -28,4 +28,12 @@ interface MemoInterface
      * @return array
      */
     public function saveMemo(int|null $memoId, int $loginUserId, string|null $title, string|null $content): array;
+
+    /**
+     * メモを削除
+     * @param int $memoId
+     * @param string $loginUserId
+     * @return void
+     */
+    public function deleteMemo(int $memoId, string $loginUserId): void;
 }
