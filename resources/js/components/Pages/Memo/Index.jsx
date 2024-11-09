@@ -8,7 +8,7 @@ function Memos() {
     const fetchData = async () => {
         try {
             const result = await FetchAll(route('memo.index'));
-            setData(result.data || []);
+            setData(result.memos || []);
         } catch (error) {
             console.error("Error loading data", error);
         }
@@ -16,7 +16,7 @@ function Memos() {
 
     useEffect(() => {
         fetchData();
-    });
+    }, []);
 
     return (
         <ul>

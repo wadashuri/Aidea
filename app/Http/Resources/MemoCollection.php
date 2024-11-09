@@ -8,6 +8,8 @@ use Illuminate\Support\Collection;
 
 class MemoCollection extends ResourceCollection
 {
+    public static $wrap = 'memos';
+
     /**
      * @param Request $request
      * @return Collection
