@@ -1,10 +1,10 @@
 <?php
-namespace App\UseCases;
+namespace App\UseCases\Memo;
 
 use App\Contracts\UserInterface;
 use App\Contracts\MemoInterface;
 
-class MemoDeleteUseCase
+class IndexUseCase
 {
     public function __construct(
         private readonly UserInterface $userRepository,
@@ -12,9 +12,9 @@ class MemoDeleteUseCase
     ) {
     }
 
-    public function execute(string|null $memoId): void
+    public function execute()
     {
         $loginUser = $this->userRepository->getLoginUser();
-        $this->memoRepository->deleteMemo($memoId, $loginUser['id']);
+        return $this->memoRepository->getMemos($loginUser['id']);
     }
 }

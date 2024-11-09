@@ -1,10 +1,10 @@
 <?php
-namespace App\UseCases;
+namespace App\UseCases\Memo;
 
 use App\Contracts\UserInterface;
 use App\Contracts\MemoInterface;
 
-class MemoIndexUseCase
+class ShowUseCase
 {
     public function __construct(
         private readonly UserInterface $userRepository,
@@ -12,9 +12,9 @@ class MemoIndexUseCase
     ) {
     }
 
-    public function execute()
+    public function execute(string $memoId)
     {
         $loginUser = $this->userRepository->getLoginUser();
-        return $this->memoRepository->getMemos($loginUser['id']);
+        return $this->memoRepository->getMemo($loginUser['id'], $memoId);
     }
 }

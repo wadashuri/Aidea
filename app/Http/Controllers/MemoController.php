@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\UseCases\MemoIndexUseCase;
-use App\UseCases\MemoShowUseCase;
-use App\UseCases\MemoStoreUseCase;
-use App\UseCases\MemoUpdateUseCase;
-use App\UseCases\MemoDeleteUseCase;
+use App\UseCases\Memo\IndexUseCase;
+use App\UseCases\Memo\ShowUseCase;
+use App\UseCases\Memo\StoreUseCase;
+use App\UseCases\Memo\UpdateUseCase;
+use App\UseCases\Memo\DeleteUseCase;
 use App\Http\Resources\MemoCollection;
 use App\Http\Resources\MemoResource;
 use Illuminate\Http\Request;
@@ -19,10 +19,10 @@ class MemoController extends Controller
 {
     /**
      * メモ一覧取得
-     * @param MemoIndexUseCase $useCase
+     * @param IndexUseCase $useCase
      * @return MemoCollection
      */
-    public function index(MemoIndexUseCase $useCase): MemoCollection
+    public function index(IndexUseCase $useCase): MemoCollection
     {
         return new MemoCollection($useCase->execute());
     }
@@ -30,10 +30,10 @@ class MemoController extends Controller
     /**
      * メモ詳細取得
      * @param Request $request
-     * @param MemoShowUseCase $useCase
+     * @param ShowUseCase $useCase
      * @return \Inertia\Response
      */
-    public function show(Request $request, MemoShowUseCase $useCase): Response
+    public function show(Request $request, ShowUseCase $useCase): Response
     {
         return Inertia::render('Memo/Show',[
             'memo' => new MemoResource($useCase->execute($request?->memoId)),
@@ -43,10 +43,10 @@ class MemoController extends Controller
     /**
      * メモ作成
      * @return void
-     * @param MemoSaveUseCase $useCase
+     * @param StoreUseCase $useCase
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(MemoStoreUseCase $useCase): \Illuminate\Http\RedirectResponse
+    public function store(StoreUseCase $useCase): \Illuminate\Http\RedirectResponse
     {
         $memo = $useCase->execute();
         return Redirect::route('memo.show', ['memoId' => $memo['id']]);
@@ -54,10 +54,10 @@ class MemoController extends Controller
 
     /**
      * メモ更新
-     * @param Request $request
-     * @param MemoUpdateUseCase $useCase
+     * @param MemoUpdateRequest $request
+     * @param UpdateUseCase $useCase
      */
-    public function update(MemoUpdateRequest $request, MemoUpdateUseCase $useCase): void
+    public function update(MemoUpdateRequest $request, UpdateUseCase $useCase): void
     {
         $useCase->execute($request->validated());
     }
@@ -65,10 +65,10 @@ class MemoController extends Controller
     /**
      * メモ削除
      * @param Request $request
-     * @param MemoDeleteUseCase $useCase
+     * @param DeleteUseCase $useCase
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Request $request, MemoDeleteUseCase $useCase): \Illuminate\Http\RedirectResponse
+    public function destroy(Request $request, DeleteUseCase $useCase): \Illuminate\Http\RedirectResponse
     {
         $useCase->execute($request?->memoId);
         return Redirect::route('dashboard');

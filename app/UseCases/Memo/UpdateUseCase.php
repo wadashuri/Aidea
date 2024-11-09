@@ -1,10 +1,10 @@
 <?php
-namespace App\UseCases;
+namespace App\UseCases\Memo;
 
 use App\Contracts\UserInterface;
 use App\Contracts\MemoInterface;
 
-class MemoUpdateUseCase
+class UpdateUseCase
 {
     public function __construct(
         private readonly UserInterface $userRepository,
