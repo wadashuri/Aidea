@@ -7,7 +7,6 @@
             {{ env('APP_NAME', 'laravel') }}
         </span>
     </div>
-    <div class="h-full">
-        <div id="memoList" class="mt-6"></div>
+    <div id="memoIndex" class="h-full mt-6">
     </div>
 </div>

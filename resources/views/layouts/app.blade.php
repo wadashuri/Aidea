@@ -13,6 +13,7 @@
 
         <!-- Scripts -->
         @viteReactRefresh
+        @routes
         @vite(['resources/css/app.css', 'resources/js/app.jsx'])
     </head>
     <body class="h-full font-sans antialiased">
@@ -24,13 +25,11 @@
                 @include('layouts.navigation')
     
                 <!-- ヘッダー -->
-                {{-- @isset($header)
-                    <header class="bg-white shadow">
-                        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                            {{ $header }}
-                        </div>
-                    </header>
-                @endisset --}}
+                <header class="bg-white shadow">
+                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                        タイトル
+                    </div>
+                </header>
     
                 <!-- コンテンツ -->
                 <main>

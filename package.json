@@ -22,6 +22,7 @@
         "@blocknote/mantine": "^0.18.1",
         "@blocknote/react": "^0.18.1",
         "react": "^18.3.1",
-        "react-dom": "^18.3.1"
+        "react-dom": "^18.3.1",
+        "ziggy-js": "^2.3.1"
     }
 }
