@@ -1,5 +1,4 @@
 <?php
-
 use App\Http\Controllers;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -27,6 +26,7 @@ Route::middleware('auth')->group(function () {
 
     Route::group(['controller' => Controllers\MemoController::class], function () {
         Route::get('/memo', 'index')->name('memo.index');
+        Route::get('/memo/show', 'show')->name('memo.show');
     });
 });
 

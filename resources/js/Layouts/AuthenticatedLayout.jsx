@@ -1,5 +1,5 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
-import Memos from '@/Pages/Memo/Index';
+import Sidebar from '@/Layouts/Sidebar';
 import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
@@ -14,11 +14,7 @@ export default function AuthenticatedLayout({ header, children }) {
 
     return (
         <div className="h-screen flex bg-gray-100">
-            <div className="flex-shrink-0 w-64 bg-gray-800 overflow-y-auto transition-all duration-300 hidden sm:block">
-                <div className="h-full mt-6">
-                    <Memos />
-                </div>
-            </div>
+            <Sidebar />
             <div className="flex-1 overflow-y-auto transition-all duration-300">
                 <nav className="border-b border-gray-100 bg-white">
                     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

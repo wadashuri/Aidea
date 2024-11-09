@@ -17,11 +17,25 @@ class MemoRepository implements MemoInterface
         return Memo::select(
             'id',
             'title',
-            'content',
-            'created_at',
-            'updated_at'
             )
             ->where('user_id', $loginUserId)
             ->get()?->toArray() ?? [];
+    }
+
+    /**
+     * メモを取得
+     * @param int $loginUserId
+     * @param string $memoId
+     * @return array
+     */
+    public function getMemo(int $loginUserId, string $memoId): array
+    {
+        return Memo::select(
+            'title',
+            'content',
+            )
+            ->where('user_id', $loginUserId)
+            ->where('id', $memoId)
+            ->first()?->toArray() ?? [];
     }
 }

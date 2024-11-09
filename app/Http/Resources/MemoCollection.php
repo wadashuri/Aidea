@@ -20,9 +20,6 @@ class MemoCollection extends ResourceCollection
             return [
                 'id' => $memo['id'],
                 'title' => $memo['title'],
-                'content' => $memo['content'],
-                'created_at' => $memo['created_at'],
-                'updated_at' => $memo['updated_at'],
             ];
         });
     }
