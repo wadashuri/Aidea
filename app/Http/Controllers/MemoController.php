@@ -6,6 +6,7 @@ use App\UseCases\MemoIndexUseCase;
 use App\UseCases\MemoShowUseCase;
 use App\UseCases\MemoStoreUseCase;
 use App\UseCases\MemoUpdateUseCase;
+use App\UseCases\MemoDeleteUseCase;
 use App\Http\Resources\MemoCollection;
 use App\Http\Resources\MemoResource;
 use Illuminate\Http\Request;
@@ -59,5 +60,17 @@ class MemoController extends Controller
     public function update(MemoUpdateRequest $request, MemoUpdateUseCase $useCase): void
     {
         $useCase->execute($request->validated());
+    }
+
+    /**
+     * メモ削除
+     * @param Request $request
+     * @param MemoDeleteUseCase $useCase
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function destroy(Request $request, MemoDeleteUseCase $useCase): \Illuminate\Http\RedirectResponse
+    {
+        $useCase->execute($request?->memoId);
+        return Redirect::route('dashboard');
     }
 }

@@ -29,6 +29,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/memo/show', 'show')->name('memo.show');
         Route::post('/memo/store', 'store')->name('memo.store');
         Route::patch('/memo/update', 'update')->name('memo.update');
+        Route::delete('/memo/destroy', 'destroy')->name('memo.destroy');
     });
 });
 

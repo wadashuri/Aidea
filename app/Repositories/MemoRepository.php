@@ -64,4 +64,17 @@ class MemoRepository implements MemoInterface
             ]
             )?->toArray() ?? [];
     }
+
+    /**
+     * メモを削除
+     * @param int $memoId
+     * @param string $loginUserId
+     * @return void
+     */
+    public function deleteMemo(int $memoId, string $loginUserId): void
+    {
+        Memo::where('id', $memoId)
+            ->where('user_id', $loginUserId)
+            ->delete();
+    }
 }
