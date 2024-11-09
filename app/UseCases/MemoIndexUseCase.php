@@ -4,7 +4,7 @@ namespace App\UseCases;
 use App\Contracts\UserInterface;
 use App\Contracts\MemoInterface;
 
-class MemoUseCase
+class MemoIndexUseCase
 {
     public function __construct(
         private readonly UserInterface $userRepository,
