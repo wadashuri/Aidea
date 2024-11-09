@@ -7,7 +7,7 @@ export default function Memo({ memo }) {
     const [title, setTitle] = useState(memo.data.title || '新規メモ');
     const [content, setContent] = useState(memo.data.content || 'メモがありません');
 
-    // Todo: useFormフックを使うように修正
+    // TODO: useFormフックを使うように修正
     const handleBlur = () => {
         Inertia.patch(route('memo.update', {
             memoId : memo.data.id,
