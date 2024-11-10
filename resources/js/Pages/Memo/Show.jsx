@@ -1,19 +1,19 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
-import { Inertia } from '@inertiajs/inertia';
-import { useState } from 'react';
+import { Head, useForm } from '@inertiajs/react';
 
 export default function Memo({ memo }) {
-    const [title, setTitle] = useState(memo.data.title || '新規メモ');
-    const [content, setContent] = useState(memo.data.content || 'メモがありません');
+    // useFormフックでフォームの状態を管理
+    const { data, setData, patch } = useForm({
+        title: memo.data.title || '新規メモ',
+        content: memo.data.content || 'メモがありません',
+    });
 
-    // TODO: useFormフックを使うように修正
+    // onBlurイベントで更新処理を実行
     const handleBlur = () => {
-        Inertia.patch(route('memo.update', {
-            memoId : memo.data.id,
-            title,
-            content
-        }));
+        patch(route('memo.update', { memoId: memo.data.id }), {
+            preserveScroll: true,
+            preserveState: true,
+        });
     };
 
     return (
@@ -23,8 +23,8 @@ export default function Memo({ memo }) {
                     <input
                         type="text"
                         className="text-xl font-semibold leading-tight text-gray-800 w-full p-2 border border-gray-300 rounded"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
+                        value={data.title}
+                        onChange={(e) => setData('title', e.target.value)}
                         onBlur={handleBlur}
                     />
                 </h2>
@@ -38,8 +38,8 @@ export default function Memo({ memo }) {
                         <div className="p-6 text-gray-900">
                             <textarea
                                 className="w-full p-2 border border-gray-300 rounded"
-                                value={content}
-                                onChange={(e) => setContent(e.target.value)}
+                                value={data.content}
+                                onChange={(e) => setData('content', e.target.value)}
                                 onBlur={handleBlur}
                             />
                         </div>

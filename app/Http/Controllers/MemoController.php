@@ -13,6 +13,8 @@ use App\Http\Requests\MemoUpdateRequest;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
+use Illuminate\Http\RedirectResponse;
 
 class MemoController extends Controller
 {
@@ -43,12 +45,12 @@ class MemoController extends Controller
      * メモ作成
      * @return void
      * @param StoreUseCase $useCase
-     * @return \Illuminate\Http\RedirectResponse
+     * @return SymfonyResponse
      */
-    public function store(StoreUseCase $useCase): \Illuminate\Http\RedirectResponse
+    public function store(StoreUseCase $useCase): SymfonyResponse
     {
         $memo = $useCase->execute();
-        return Redirect::route('memo.show', ['memoId' => $memo['id']]);
+        return Inertia::location(route('memo.show', ['memoId' => $memo['id']]));
     }
 
     /**
@@ -56,19 +58,21 @@ class MemoController extends Controller
      * @param int $memoId
      * @param MemoUpdateRequest $request
      * @param UpdateUseCase $useCase
+     * @return SymfonyResponse
      */
-    public function update(int $memoId, MemoUpdateRequest $request, UpdateUseCase $useCase): void
+    public function update(int $memoId, MemoUpdateRequest $request, UpdateUseCase $useCase): SymfonyResponse
     {
-        $useCase->execute($memoId, $request->validated());
+        $memo = $useCase->execute($memoId, $request->validated());
+        return Inertia::location(route('memo.show', ['memoId' => $memo['id']]));
     }
 
     /**
      * メモ削除
      * @param int $memoId
      * @param DeleteUseCase $useCase
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-    public function destroy(int $memoId, DeleteUseCase $useCase): \Illuminate\Http\RedirectResponse
+    public function destroy(int $memoId, DeleteUseCase $useCase): RedirectResponse
     {
         $useCase->execute($memoId);
         return Redirect::route('dashboard');
