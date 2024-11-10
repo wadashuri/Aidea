@@ -22,7 +22,6 @@ class MemoUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'memoId' => ['nullable', 'integer'],
             'title' => ['nullable', 'string', 'max:255'],
             'content' => ['nullable', 'string', 'max:5000'],
         ];

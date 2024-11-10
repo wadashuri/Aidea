@@ -26,10 +26,10 @@ Route::middleware('auth')->group(function () {
 
     Route::group(['controller' => Controllers\MemoController::class], function () {
         Route::get('/memo', 'index')->name('memo.index');
-        Route::get('/memo/show', 'show')->name('memo.show');
+        Route::get('/memo/{memoId}', 'show')->name('memo.show');
         Route::post('/memo/store', 'store')->name('memo.store');
-        Route::patch('/memo/update', 'update')->name('memo.update');
-        Route::delete('/memo/destroy', 'destroy')->name('memo.destroy');
+        Route::patch('/memo/{memoId}', 'update')->name('memo.update');
+        Route::delete('/memo/{memoId}', 'destroy')->name('memo.destroy');
     });
 });
 
