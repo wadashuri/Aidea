@@ -1,11 +1,21 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm } from '@inertiajs/react';
 
+import { locales } from "@blocknote/core";
+import "@blocknote/core/fonts/inter.css";
+import { BlockNoteView } from "@blocknote/mantine";
+import "@blocknote/mantine/style.css";
+import { useCreateBlockNote } from "@blocknote/react";
+
 export default function Memo({ memo }) {
-    // useFormフックでフォームの状態を管理
-    const { data, setData, patch } = useForm({
-        title: memo.data.title || '新規メモ',
-        content: memo.data.content || 'メモがありません',
+
+    const initialContent = memo.data.content ? JSON.parse(memo.data.content) : null;
+
+
+    // エディタのインスタンスを作成し、初期化
+    const editor = useCreateBlockNote({
+        dictionary: locales.ja,  // 日本語化
+        initialContent: initialContent,
     });
 
     // onBlurイベントで更新処理を実行
@@ -15,6 +25,12 @@ export default function Memo({ memo }) {
             preserveState: true,
         });
     };
+
+    // useFormフックでフォームの状態を管理
+    const { data, setData, patch } = useForm({
+        title: memo.data.title || '新規メモ',
+        content: memo.data.content || 'メモがありません',
+    });
 
     return (
         <AuthenticatedLayout
@@ -36,10 +52,11 @@ export default function Memo({ memo }) {
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
-                            <textarea
-                                className="w-full p-2 border border-gray-300 rounded"
-                                value={data.content}
-                                onChange={(e) => setData('content', e.target.value)}
+                            <BlockNoteView 
+                                editor={editor}
+                                onChange={() => {
+                                    setData("content", JSON.stringify(editor.document));
+                                }}
                                 onBlur={handleBlur}
                             />
                         </div>

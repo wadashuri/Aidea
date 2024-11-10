@@ -18,7 +18,7 @@ class UpdateUseCase
             memoId: $memoId,
             loginUserId: $this->userRepository->getLoginUser()['id'],
             title: $params['title'],
-            content: json_encode($params['content']),// BlockNote導入時にバリデーションでjsonのみ受け付けるようにする為後で削除
+            content: $params['content'],
         );
     }
 }
