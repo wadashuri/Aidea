@@ -54,6 +54,9 @@ export default function Memo({ memo }) {
                         <div className="p-6 text-gray-900">
                             <BlockNoteView 
                                 editor={editor}
+                                // サイドメニューをクリックするとonBlurが発生してしまうため、暫定対応としてサイドバー無効化
+                                // TODO: サイドメニューをクリックしてもonBlurが発生しないようにするか別の方法で対応する
+                                sideMenu={false}
                                 onChange={() => {
                                     setData("content", JSON.stringify(editor.document));
                                 }}
