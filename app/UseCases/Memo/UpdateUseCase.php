@@ -12,13 +12,13 @@ class UpdateUseCase
     ) {
     }
 
-    public function execute(array $params): array
+    public function execute(int $memoId, array $params): array
     {
         return $this->memoRepository->saveMemo(
-            memoId: $params['memoId'],
+            memoId: $memoId,
             loginUserId: $this->userRepository->getLoginUser()['id'],
             title: $params['title'],
-            content: json_encode($params['content']),
+            content: json_encode($params['content']),// BlockNote導入時にバリデーションでjsonのみ受け付けるようにする為後で削除
         );
     }
 }
