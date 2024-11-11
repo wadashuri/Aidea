@@ -1,6 +1,6 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm } from '@inertiajs/react';
-
+import { useState } from "react";
 import { locales } from "@blocknote/core";
 import "@blocknote/core/fonts/inter.css";
 import { BlockNoteView } from "@blocknote/mantine";
@@ -8,7 +8,7 @@ import "@blocknote/mantine/style.css";
 import { useCreateBlockNote } from "@blocknote/react";
 
 export default function Memo({ memo }) {
-
+    const [hasLengthChanged, setHasLengthChanged] = useState(true);
     const initialContent = memo.data.content ? JSON.parse(memo.data.content) : null;
 
 
@@ -17,13 +17,18 @@ export default function Memo({ memo }) {
         dictionary: locales.ja,  // 日本語化
         initialContent: initialContent,
     });
+    const [previousLength, setPreviousLength] = useState(0);
 
     // onBlurイベントで更新処理を実行
     const handleBlur = () => {
-        patch(route('memo.update', { memoId: memo.data.id }), {
-            preserveScroll: true,
-            preserveState: true,
-        });
+        // 要素を追加した時は更新しない
+        console.log(hasLengthChanged);
+        if(hasLengthChanged !== true){
+            patch(route('memo.update', { memoId: memo.data.id }), {
+                preserveScroll: true,
+                preserveState: true,
+            });
+        }
     };
 
     // useFormフックでフォームの状態を管理
@@ -31,6 +36,14 @@ export default function Memo({ memo }) {
         title: memo.data.title || '新規メモ',
         content: memo.data.content || 'メモがありません',
     });
+
+    const onChange = () => {
+        console.log(hasLengthChanged);
+        setData("content", JSON.stringify(editor.document));
+        const currentLength = editor.document.length;
+        setHasLengthChanged(currentLength !== previousLength);
+        setPreviousLength(currentLength);
+    };
 
     return (
         <AuthenticatedLayout
@@ -54,12 +67,8 @@ export default function Memo({ memo }) {
                         <div className="p-6 text-gray-900">
                             <BlockNoteView 
                                 editor={editor}
-                                // サイドメニューをクリックするとonBlurが発生してしまうため、暫定対応としてサイドバー無効化
-                                // TODO: サイドメニューをクリックしてもonBlurが発生しないようにするか別の方法で対応する
-                                sideMenu={false}
-                                onChange={() => {
-                                    setData("content", JSON.stringify(editor.document));
-                                }}
+                                onChange={onChange}
+                                theme='light'
                                 onBlur={handleBlur}
                             />
                         </div>
