@@ -5,7 +5,7 @@ import UpdateContentForm from './Partials/UpdateContentForm';
 
 export default function Show({ memo }) {
     return (
-        <AuthenticatedLayout header={<UpdateTitleForm memo={memo}/>}>
+        <AuthenticatedLayout header={ <UpdateTitleForm memo={memo}/> } >
             <Head title="Memo" />
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
