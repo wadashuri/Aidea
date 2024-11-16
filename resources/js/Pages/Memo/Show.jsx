@@ -6,30 +6,30 @@ import "@blocknote/core/fonts/inter.css";
 import { BlockNoteView } from "@blocknote/mantine";
 import "@blocknote/mantine/style.css";
 import { useCreateBlockNote } from "@blocknote/react";
+import { debounce } from 'lodash';
 
 export default function Memo({ memo }) {
-    const [hasLengthChanged, setHasLengthChanged] = useState(true);
+    const [beforeLength, setBeforeLength] = useState(0);
     const initialContent = memo.data.content ? JSON.parse(memo.data.content) : null;
-
 
     // エディタのインスタンスを作成し、初期化
     const editor = useCreateBlockNote({
         dictionary: locales.ja,  // 日本語化
         initialContent: initialContent,
     });
-    const [previousLength, setPreviousLength] = useState(0);
 
     // onBlurイベントで更新処理を実行
-    const handleBlur = () => {
-        // 要素を追加した時は更新しない
-        console.log(hasLengthChanged);
-        if(hasLengthChanged !== true){
+    const handleBlur = debounce(() => {
+
+        // 暫定対応としてコンテンツの行数で更新するか判断
+        // TODO : LocalStorageなどを使いリアルタイム更新を実現するように修正
+        if (beforeLength === editor.document.length) {
             patch(route('memo.update', { memoId: memo.data.id }), {
                 preserveScroll: true,
                 preserveState: true,
             });
         }
-    };
+    }, 1000);
 
     // useFormフックでフォームの状態を管理
     const { data, setData, patch } = useForm({
@@ -38,11 +38,8 @@ export default function Memo({ memo }) {
     });
 
     const onChange = () => {
-        console.log(hasLengthChanged);
+        setBeforeLength(editor.document.length);
         setData("content", JSON.stringify(editor.document));
-        const currentLength = editor.document.length;
-        setHasLengthChanged(currentLength !== previousLength);
-        setPreviousLength(currentLength);
     };
 
     return (
