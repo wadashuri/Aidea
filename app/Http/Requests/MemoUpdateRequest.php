@@ -23,7 +23,7 @@ class MemoUpdateRequest extends FormRequest
     {
         return [
             'title' => ['nullable', 'string', 'max:255'],
-            'content' => ['nullable', 'string', 'max:5000'],
+            'content' => ['nullable', 'json', 'max:5000'],
         ];
     }
 }

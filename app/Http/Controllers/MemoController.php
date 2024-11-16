@@ -58,12 +58,11 @@ class MemoController extends Controller
      * @param int $memoId
      * @param MemoUpdateRequest $request
      * @param UpdateUseCase $useCase
-     * @return SymfonyResponse
+     * @return void
      */
-    public function update(int $memoId, MemoUpdateRequest $request, UpdateUseCase $useCase): SymfonyResponse
+    public function update(int $memoId, MemoUpdateRequest $request, UpdateUseCase $useCase): void
     {
-        $memo = $useCase->execute($memoId, $request->validated());
-        return Inertia::location(route('memo.show', ['memoId' => $memo['id']]));
+        $useCase->execute($memoId, $request->validated());
     }
 
     /**

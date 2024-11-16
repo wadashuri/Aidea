@@ -17,7 +17,21 @@ class MemoFactory extends Factory
         return [
             'user_id' => User::factory(),
             'title' => $this->faker->sentence,
-            'content' => json_encode([$this->faker->paragraph]),
+            'content' => json_encode([[
+                'id' => (string) \Illuminate\Support\Str::uuid(),  // 各ブロックに一意のIDを設定
+                'type' => 'paragraph',
+                'props' => [
+                    'textColor' => 'default',
+                    'textAlignment' => 'left',
+                    'backgroundColor' => 'default',
+                ],
+                'content' => [[
+                    'text' => '',
+                    'type' => 'text',
+                    'styles' => (object) [],  // 空のオブジェクトをstylesとして設定
+                ]],
+                'children' => []
+            ]]),
         ];
     }
 }
