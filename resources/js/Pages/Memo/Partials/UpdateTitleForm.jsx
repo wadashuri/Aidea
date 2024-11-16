@@ -1,10 +1,11 @@
 import { useForm } from "@inertiajs/react";
+import TextInput from '@/Components/TextInput';
 
 export default function UpdateTitleForm({ memo }) {
 
     const { data, setData, patch } = useForm({
         title: memo.data.title || '新規メモ',
-        content: memo.data.content || 'メモがありません',
+        content: memo.data.content || null,
     });
 
     const handleTitleBlur = () => {
@@ -16,7 +17,7 @@ export default function UpdateTitleForm({ memo }) {
 
     return (
         <h2 className="text-xl font-semibold leading-tight text-gray-800">
-            <input
+            <TextInput
                 type="text"
                 className="text-xl border-none focus:ring-0 font-semibold leading-tight text-gray-800 w-full p-2 border border-gray-300 rounded"
                 value={data.title}
