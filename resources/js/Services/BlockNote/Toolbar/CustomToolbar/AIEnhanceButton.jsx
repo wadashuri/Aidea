@@ -27,7 +27,9 @@ export function AIEnhanceButton() {
     // "置き換える" ボタンを押した際の処理
     const handleYesClick = () => {
         if (modalText) {
-            editor.insertInlineContent(modalText); // 改善された文章を挿入
+            modalText.forEach((block) => {
+                editor.updateBlock(block.id, { content: block.content[0].text });
+            });
         }
         handleModalClose();
     };
@@ -46,7 +48,7 @@ export function AIEnhanceButton() {
         try {
             // AI API を呼び出して文章を改善
             const response = await axios.post("/memo/ai_text_enhance", {
-                text: selectedText, // テキストを文字列に変換して送信
+                text: selectedText,
             });
 
             // 改善された文章をセット
