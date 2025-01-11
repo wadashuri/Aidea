@@ -9,7 +9,7 @@ export function AIEnhanceButton() {
     const editor = useBlockNoteEditor();
     const Components = useComponentsContext();
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [modalText, setModalText] = useState([]);
+    const [modalText, setModalText] = useState(null);
     const [loading, setLoading] = useState(false);
 
     const handleModalClose = () => {
@@ -61,16 +61,19 @@ export function AIEnhanceButton() {
                 content: JSON.stringify(hierarchicalBlocks),
             });
 
-            // 改善された文章をセット
-            setModalText(JSON.parse(response.data.enhanced_text));
+            const enhancedText = JSON.parse(response.data.enhanced_text);
+            if (Array.isArray(enhancedText)) {
+                // 改善された文章をセット
+                setModalText(enhancedText);
+            } else {
+                console.error("Unexpected data format:", enhancedText);
+                setError("改善結果のデータ形式が不正です。");
+            }
         } catch (err) {
-            console.log(
-                "文章の改善に失敗しました。もう一度お試しください。",
-                err
-            );
+            console.error("AI Enhance Error:", err);
+            setError("文章の改善に失敗しました。もう一度お試しください。");
         } finally {
-            // ローディング終了
-            setLoading(false);
+            setLoading(false); // ローディング終了
         }
     };
 
@@ -105,7 +108,7 @@ export function AIEnhanceButton() {
                         <p>改善中...</p>
                     ) : (
                         <>
-                            <BlockNoteEditor initialContent={modalText} />
+                            <BlockNoteEditor initialContent={modalText ? modalText : null} />
                             <div className="mt-4 flex justify-end gap-2">
                                 <button
                                     className="btn-secondary"
