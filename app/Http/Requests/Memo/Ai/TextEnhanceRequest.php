@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Memo\Ai;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class MemoUpdateRequest extends FormRequest
+class TextEnhanceRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +22,7 @@ class MemoUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['nullable', 'string', 'max:255'],
-            'content' => ['nullable', 'json', 'max:5000'],
+            'content' => ['required', 'json', 'max:5000'],
         ];
     }
 }

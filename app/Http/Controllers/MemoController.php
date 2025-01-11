@@ -9,7 +9,7 @@ use App\UseCases\Memo\UpdateUseCase;
 use App\UseCases\Memo\DeleteUseCase;
 use App\Http\Resources\MemoCollection;
 use App\Http\Resources\MemoResource;
-use App\Http\Requests\MemoUpdateRequest;
+use App\Http\Requests\Memo\UpdateRequest;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -56,11 +56,11 @@ class MemoController extends Controller
     /**
      * メモ更新
      * @param int $memoId
-     * @param MemoUpdateRequest $request
+     * @param UpdateRequest $request
      * @param UpdateUseCase $useCase
      * @return void
      */
-    public function update(int $memoId, MemoUpdateRequest $request, UpdateUseCase $useCase): void
+    public function update(int $memoId, UpdateRequest $request, UpdateUseCase $useCase): void
     {
         $useCase->execute($memoId, $request->validated());
     }
