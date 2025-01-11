@@ -35,7 +35,7 @@ Route::middleware('auth')->group(function () {
     });
 
     // AI文章改善
-    Route::post('memo/ai_text_enhance', Controllers\AiTextEnhanceController::class);
+    Route::post('memo/ai/text_enhance', Controllers\AiTextEnhanceController::class);
 });
 
 require __DIR__.'/auth.php';

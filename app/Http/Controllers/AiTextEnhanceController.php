@@ -2,22 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\Memo\Ai\TextEnhanceRequest;
+use App\UseCases\Memo\Ai\TextEnhanceUseCase;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 class AiTextEnhanceController extends Controller
 {
     /**
      * Aiによる文章改善
-     * TODO: ・バリデーションを追加する
-     *       ・useCaseとResourceファイルを追加する
      * 
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @param TextEnhanceRequest $request
+     * @param TextEnhanceUseCase $useCase
+     * @return JsonResponse
      */
-    public function __invoke(Request $request)
+    public function __invoke(TextEnhanceRequest $request, TextEnhanceUseCase $useCase): JsonResponse
     {
         return response()->json([
-            'enhanced_text' => app(\App\Services\OpenAi\ChatGpt::class)->AiTextEnhance(json_encode($request->text)),
+            'enhanced_text' => $useCase->execute($request->validated()['content']),
+            Response::HTTP_OK
         ]);
     }
 }

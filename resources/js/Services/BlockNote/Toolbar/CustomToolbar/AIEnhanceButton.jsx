@@ -46,14 +46,15 @@ export function AIEnhanceButton() {
         setError(null); // エラーメッセージをリセット
 
         try {
+            setIsModalOpen(true); // モーダルを開く
+
             // AI API を呼び出して文章を改善
-            const response = await axios.post("/memo/ai_text_enhance", {
-                text: selectedText,
+            const response = await axios.post("/memo/ai/text_enhance", {
+                content: JSON.stringify(selectedText),
             });
 
             // 改善された文章をセット
             setModalText(JSON.parse(response.data.enhanced_text));
-            setIsModalOpen(true); // モーダルを開く
         } catch (err) {
             console.error("AI Enhance Error:", err);
             setError("文章の改善に失敗しました。もう一度お試しください。");
