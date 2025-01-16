@@ -1,3 +1,4 @@
+import ApplicationLogo from '@/Components/ApplicationLogo';
 import { Head, Link } from '@inertiajs/react';
 
 // TODO: リンクや画像のURLを実際のものに置き換える
@@ -21,11 +22,9 @@ export default function AideaLandingPage() {
             <header className="bg-white shadow-md">
                 <div className="container mx-auto px-4 py-4 flex justify-between items-center">
                     <div className="flex items-center">
-                        <img
-                            src="https://via.placeholder.com/40" // ロボットのロゴに置き換え
-                            alt="Aidea ロゴ"
-                            className="mr-2"
-                        />
+                        <Link href="/">
+                            <ApplicationLogo className="mr-2 h-8 w-8" />
+                        </Link>
                         <span className="text-xl font-bold text-gray-900">Aidea</span>
                     </div>
                     <nav>
@@ -65,7 +64,7 @@ export default function AideaLandingPage() {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <div className="p-6 bg-white shadow-md rounded-lg text-center">
                             <img
-                                src="https://cdn-icons-png.flaticon.com/512/2979/2979160.png"
+                                src="https://img.icons8.com/?size=100&id=NFxVrelp1paK&format=png&color=000000"
                                 alt="AI文章改善アイコン"
                                 className="mx-auto mb-4 w-20 h-20"
                             />
@@ -74,16 +73,16 @@ export default function AideaLandingPage() {
                         </div>
                         <div className="p-6 bg-white shadow-md rounded-lg text-center">
                             <img
-                                src="https://cdn-icons-png.flaticon.com/512/888/888443.png"
+                                src="https://img.icons8.com/?size=100&id=65873&format=png&color=000000"
                                 alt="翻訳アイコン"
                                 className="mx-auto mb-4 w-20 h-20"
                             />
-                            <h3 className="text-xl font-semibold mb-2">翻訳機能</h3>
+                            <h3 className="text-xl font-semibold mb-2">AI翻訳</h3>
                             <p>複数の言語間での翻訳をスムーズに行えます。</p>
                         </div>
                         <div className="p-6 bg-white shadow-md rounded-lg text-center">
                             <img
-                                src="https://cdn-icons-png.flaticon.com/512/2922/2922127.png"
+                                src="https://img.icons8.com/?size=100&id=OCa9KFTfUYVV&format=png&color=000000"
                                 alt="メモ管理アイコン"
                                 className="mx-auto mb-4 w-20 h-20"
                             />
@@ -113,7 +112,7 @@ export default function AideaLandingPage() {
                         <div className="p-6 bg-white shadow-md rounded-lg">
                             <h3 className="text-xl font-semibold mb-4">プレミアムプラン</h3>
                             <p className="mb-4">AI機能をフル活用可能</p>
-                            <span className="block text-2xl font-bold mb-4">¥980/月</span>
+                            <span className="block text-2xl font-bold mb-4">¥500/月</span>
                             <a
                                 href="#cta"
                                 className="bg-indigo-600 text-white py-2 px-4 rounded-full hover:bg-indigo-500"
