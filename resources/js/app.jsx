@@ -8,7 +8,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
-const stripePromise = loadStripe(import.meta.env.STRIPE_PUBLISHABLE_KEY);
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,

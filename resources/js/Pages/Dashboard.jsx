@@ -1,5 +1,6 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
+import CheckoutForm from '@/Components/Subscription/CheckoutForm';
 
 export default function Dashboard() {
     return (
@@ -17,6 +18,8 @@ export default function Dashboard() {
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
                             Dashboard
+                            {/* Payments の有効化をしないと決済できないので一旦コメントアウト */}
+                            {/* <CheckoutForm /> */}
                         </div>
                     </div>
                 </div>
