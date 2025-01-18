@@ -115,14 +115,14 @@ export default function Top({ auth }) {
                             <h3 className="text-xl font-semibold mb-4">無料プラン</h3>
                             <p className="mb-4">AIアシストを一部無料で活用可能。</p>
                             <span className="block text-2xl font-bold mb-4">¥0/月</span>
-                            <a
-                                href="#cta"
+                            <Link
+                                href={route('register')}
                                 className="bg-indigo-600 text-white py-2 px-4 rounded-full hover:bg-indigo-500"
                             >
                                 無料で始める
-                            </a>
+                            </Link>
                         </div>
-                        <div className="p-6 bg-white shadow-md rounded-lg">
+                        {/* <div className="p-6 bg-white shadow-md rounded-lg">
                             <h3 className="text-xl font-semibold mb-4">プレミアムプラン</h3>
                             <p className="mb-4">AIアシストをフル活用可能。</p>
                             <span className="block text-2xl font-bold mb-4">¥500/月</span>
@@ -132,7 +132,7 @@ export default function Top({ auth }) {
                             >
                                 登録する
                             </a>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </section>
