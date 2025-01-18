@@ -112,7 +112,7 @@ export default function Top({ auth }) {
                     <h2 className="text-3xl font-bold mb-12">料金プラン</h2>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <div className="p-6 bg-white shadow-md rounded-lg">
-                            <h3 className="text-xl font-semibold mb-4">無料プラン</h3>
+                            <h3 className="text-xl font-semibold mb-4">フリー</h3>
                             <p className="mb-4">AIアシストを一部無料で活用可能。</p>
                             <span className="block text-2xl font-bold mb-4">¥0/月</span>
                             <a
@@ -123,7 +123,7 @@ export default function Top({ auth }) {
                             </a>
                         </div>
                         <div className="p-6 bg-white shadow-md rounded-lg">
-                            <h3 className="text-xl font-semibold mb-4">プレミアムプラン</h3>
+                            <h3 className="text-xl font-semibold mb-4">プラス</h3>
                             <p className="mb-4">AIアシストをフル活用可能。</p>
                             <span className="block text-2xl font-bold mb-4">¥500/月</span>
                             <a

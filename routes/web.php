@@ -36,6 +36,12 @@ Route::middleware('auth')->group(function () {
 
     // AI文章改善
     Route::post('memo/ai/text_enhance', Controllers\AiTextEnhanceController::class);
+
+    // サブスクリプション
+    Route::group(['controller' => Controllers\Subscription\SubscriptionController::class], function () {
+        Route::post('/subscriptions', 'store')->name('subscriptions.store');
+    });
+
 });
 
 require __DIR__.'/auth.php';
