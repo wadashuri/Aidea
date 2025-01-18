@@ -1,8 +1,7 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import { Head, Link } from '@inertiajs/react';
 
-// TODO: リンクや画像のURLを実際のものに置き換える
-export default function Welcome({ auth }) {
+export default function Top({ auth }) {
     return (
         <div className="bg-gray-50 text-gray-800">
             {/* Head */}
@@ -114,7 +113,7 @@ export default function Welcome({ auth }) {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <div className="p-6 bg-white shadow-md rounded-lg">
                             <h3 className="text-xl font-semibold mb-4">無料プラン</h3>
-                            <p className="mb-4">基本的なメモ機能に加え一部AIアシストを無料で利用可能。</p>
+                            <p className="mb-4">AIアシストを一部無料で活用可能。</p>
                             <span className="block text-2xl font-bold mb-4">¥0/月</span>
                             <a
                                 href="#cta"
