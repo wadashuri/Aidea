@@ -4,7 +4,7 @@ import BlockNoteEditor from "@/Services/BlockNote/BlockNoteEditor";
 import { useIndexedDB } from "@/Hooks/UseIndexedDB";
 
 export default function UpdateContentForm({ memo }) {
-    const { IndexDBContent, saveContent, loading } = useIndexedDB(memo.data.id);
+    const { IndexDBContent, saveIndexDBData, deleteIndexDBData, loading } = useIndexedDB(memo.data.id);
     const [isInitialLoading, setIsInitialLoading] = useState(true);
     const { setData, patch } = useForm({
         title: memo.data.title || '新規メモ',
@@ -23,7 +23,7 @@ export default function UpdateContentForm({ memo }) {
         setData("content", JSON.stringify(content));
 
         // IndexDBにデータを保存
-        saveContent(JSON.stringify(content));
+        saveIndexDBData(memo.data.title, JSON.stringify(content));
     };
 
     const handleContentBlur = (event) => {
@@ -37,6 +37,7 @@ export default function UpdateContentForm({ memo }) {
                 preserveScroll: true,
                 preserveState: true,
             });
+            deleteIndexDBData(memo.data.id);
         }
     };
 
