@@ -10,6 +10,7 @@ export function AIEnhanceButton() {
     const Components = useComponentsContext();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalText, setModalText] = useState(null);
+    const [oldContent, setOldContent] = useState(null);
     const [loading, setLoading] = useState(false);
 
     const handleModalClose = () => {
@@ -17,26 +18,58 @@ export function AIEnhanceButton() {
         setIsModalOpen(false);
     };
 
+    // ブロックと子ブロックを再帰的に更新する関数
+    const updateBlockAndChildren = (block, editor) => {
+        // 親ブロックを更新
+        editor.updateBlock(block.id, {
+            content: block.content[0].text,
+        });
+    
+        // 子ブロックが存在する場合、再帰的に処理
+        block.children?.forEach((child) => updateBlockAndChildren(child, editor));
+    };
+
+    // ブロックと子ブロックを再帰的に更新する関数
+    const updateBlockAndChildren2 = (key, value, editor) => {
+        // 親ブロックを検索して更新
+        if (editor[0].id === key) {
+            editor[0].content[0].text = value;
+        } else {
+            console.error(`Block with ID ${key} not found.`);
+        }
+    
+        // 子ブロックが存在する場合、再帰的に処理
+        if (value.children) {
+            Object.entries(value.children).forEach(([childKey, childValue]) =>
+                updateBlockAndChildren2(childKey, childValue, editor)
+            );
+        }
+    };
+
+    /**
+     * ブロックのIDをキー、内容を値とするオブジェクトを作成する関数
+     * @param {Array} blocks - エディター内のブロック配列
+     * @returns {Object} - ブロックIDをキー、文章内容を値とするオブジェクト
+     */
+    const mapBlocksToContent = (blocks) => {
+        return blocks.reduce((acc, block) => {
+            // 複数行テキストを結合して格納
+            acc[block.id] = block.content.map((c) => c.text).join("\n");
+            return acc;
+        }, {});
+    };
+    
     // "置き換える" ボタンを押した際の処理
     const handleYesClick = () => {
         if (!modalText) {
+            // TODO: ④昔のやつでupdateBlockAndChildrenを使って更新する
+
             handleModalClose();
             return;
         }
-
-        // ブロックと子ブロックを再帰的に更新する関数
-        const updateBlockAndChildren = (block) => {
-            // 親ブロックを更新
-            editor.updateBlock(block.id, {
-                content: block.content[0].text,
-            });
-
-            // 子ブロックが存在する場合、再帰的に処理
-            block.children?.forEach(updateBlockAndChildren);
-        };
-
+    
         // modalText 内のすべてのブロックに対して再帰処理を実行
-        modalText.forEach(updateBlockAndChildren);
+        modalText.forEach((block) => updateBlockAndChildren(block, editor));
         handleModalClose();
     };
 
@@ -45,10 +78,10 @@ export function AIEnhanceButton() {
         // 選択されたテキストブロックを取得
         const selectedBlocks = editor.getSelection().blocks;
         if (!selectedBlocks || selectedBlocks.length === 0) {
-            console.log("文章が選択されていません。");
             return;
         }
         // 選択されたブロックの形式を再構築
+        const hierarchicalBlocks1 = rebuildHierarchy(selectedBlocks);
         const hierarchicalBlocks = rebuildHierarchy(selectedBlocks);
 
         // ローディング開始
@@ -57,16 +90,27 @@ export function AIEnhanceButton() {
             // モーダルを開く
             setIsModalOpen(true);
 
+            // 昔の値をセット
+            setOldContent(hierarchicalBlocks);
+
+            const blockContentMap = mapBlocksToContent(editor.getSelection().blocks);
+
             const response = await axios.post("/memo/ai/text_enhance", {
-                content: JSON.stringify(hierarchicalBlocks),
+                content: JSON.stringify(blockContentMap),
             });
 
             const enhancedText = JSON.parse(response.data.enhanced_text);
-            if (Array.isArray(enhancedText)) {
+
+            Object.entries(enhancedText).forEach(([key, value]) => {
+                updateBlockAndChildren2(key, value, hierarchicalBlocks);
+            });
+            console.log('正しくない', hierarchicalBlocks);
+
+            if (hierarchicalBlocks) {
                 // 改善された文章をセット
-                setModalText(enhancedText);
+                setModalText(hierarchicalBlocks);
             } else {
-                console.error("Unexpected data format:", enhancedText);
+                console.error("Unexpected data format:", editor);
                 setError("改善結果のデータ形式が不正です。");
             }
         } catch (err) {
