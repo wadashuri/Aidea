@@ -5,6 +5,7 @@ import { useState } from "react";
 import axios from "axios";
 import BlockNoteEditor from "@/Services/BlockNote/BlockNoteEditor";
 
+// TODO: 動いたがコードが汚すぎるのでリファクタリングする
 export function AIEnhanceButton() {
     const editor = useBlockNoteEditor();
     const Components = useComponentsContext();
