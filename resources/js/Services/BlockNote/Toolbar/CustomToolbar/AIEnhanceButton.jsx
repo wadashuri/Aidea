@@ -5,6 +5,7 @@ import { useState } from "react";
 import axios from "axios";
 import BlockNoteEditor from "@/Services/BlockNote/BlockNoteEditor";
 
+// AIによる文章改善処理
 export function AIEnhanceButton() {
     const editor = useBlockNoteEditor();
     const Components = useComponentsContext();
@@ -12,92 +13,100 @@ export function AIEnhanceButton() {
     const [modalText, setModalText] = useState(null);
     const [loading, setLoading] = useState(false);
 
-    const handleModalClose = () => {
-        // モーダルを閉じる
-        setIsModalOpen(false);
+    // モーダルが開いた際の処理
+    const handleOpenModal = async () => {
+        const selectedBlocks = editor.getSelection().blocks;
+        if (!selectedBlocks || selectedBlocks.length === 0) return;
+
+        // 階層を再構築し、親ブロックのみを取得
+        const parentBlocks = filterParentBlocks(selectedBlocks);
+
+        setLoading(true);
+        try {
+            setIsModalOpen(true);
+
+            // AIが処理しやすいようにkeyとvalueの形式に変換し文章改善リクエスト
+            const blockContentMap = convertBlocksToContentMap(selectedBlocks);
+            const response = await axios.post("/memo/ai/text_enhance", {
+                content: JSON.stringify(blockContentMap),
+            });
+
+            // 受け取ったデータをモーダルに表示する形式に変換
+            const enhancedText = JSON.parse(response.data.enhanced_text);
+            updateBlocksRecursively(parentBlocks, enhancedText);
+
+            setModalText(parentBlocks);
+        } catch (err) {
+            console.error("AI Enhance Error:", err);
+        } finally {
+            setLoading(false);
+        }
     };
 
-    // "置き換える" ボタンを押した際の処理
+    /**
+     * 選択したブロックのうち、親ブロックのみを抽出する
+     * @param {Array} blocks
+     * @returns {Array} 親ブロックのみのリスト
+     */
+    const filterParentBlocks = (blocks) => {
+        const childIds = blocks.flatMap((block) => block.children.map((child) => child.id));
+        return blocks.filter((block) => !childIds.includes(block.id));
+    };
+
+    /**
+     * ブロックをAIが処理しやすい形に変換する
+     * @param {Array} blocks
+     * @returns {Object} ブロックIDをキーにしたテキストオブジェクト
+     */
+    const convertBlocksToContentMap = (blocks) => {
+        return blocks.reduce((acc, block) => {
+            acc[block.id] = block.content.map((c) => c.text).join("\n");
+            return acc;
+        }, {});
+    };
+
+    /**
+     * 指定されたブロックとその子ブロックを再帰的に更新する
+     * @param {Array} blocks
+     * @param {Object} updatedTextMap
+     */
+    const updateBlocksRecursively = (blocks, updatedTextMap) => {
+        blocks.forEach((block) => {
+            if (updatedTextMap[block.id]) {
+                block.content[0].text = updatedTextMap[block.id];
+            }
+            block.children?.forEach((child) => updateBlocksRecursively([child], updatedTextMap));
+        });
+    };
+
+    // "置き換える" ボタンの処理
     const handleYesClick = () => {
         if (!modalText) {
             handleModalClose();
             return;
         }
 
-        // ブロックと子ブロックを再帰的に更新する関数
-        const updateBlockAndChildren = (block) => {
-            // 親ブロックを更新
-            editor.updateBlock(block.id, {
-                content: block.content[0].text,
-            });
-
-            // 子ブロックが存在する場合、再帰的に処理
-            block.children?.forEach(updateBlockAndChildren);
-        };
-
-        // modalText 内のすべてのブロックに対して再帰処理を実行
-        modalText.forEach(updateBlockAndChildren);
+        modalText.forEach((block) => applyUpdatedBlocks(block));
         handleModalClose();
     };
 
-    // モーダルを開く際の処理
-    const handleOpenModal = async () => {
-        // 選択されたテキストブロックを取得
-        const selectedBlocks = editor.getSelection().blocks;
-        if (!selectedBlocks || selectedBlocks.length === 0) {
-            console.log("文章が選択されていません。");
-            return;
-        }
-        // 選択されたブロックの形式を再構築
-        const hierarchicalBlocks = rebuildHierarchy(selectedBlocks);
-
-        // ローディング開始
-        setLoading(true);
-        try {
-            // モーダルを開く
-            setIsModalOpen(true);
-
-            const response = await axios.post("/memo/ai/text_enhance", {
-                content: JSON.stringify(hierarchicalBlocks),
-            });
-
-            const enhancedText = JSON.parse(response.data.enhanced_text);
-            if (Array.isArray(enhancedText)) {
-                // 改善された文章をセット
-                setModalText(enhancedText);
-            } else {
-                console.error("Unexpected data format:", enhancedText);
-                setError("改善結果のデータ形式が不正です。");
-            }
-        } catch (err) {
-            console.error("AI Enhance Error:", err);
-            setError("文章の改善に失敗しました。もう一度お試しください。");
-        } finally {
-            setLoading(false); // ローディング終了
-        }
+    /**
+     * エディタに更新されたブロックを適用する
+     * @param {Object} block
+     */
+    const applyUpdatedBlocks = (block) => {
+        editor.updateBlock(block.id, { content: block.content[0].text });
+        block.children?.forEach((child) => applyUpdatedBlocks(child));
     };
 
-    /**
-     * 選択されたブロックの形式を再構築
-     * INFO: 子ブロックがなぜか親ブロックと同じ階層に存在するため、再構築が必要。
-     * 選択されたブロックから重複する子ブロックを取り除き、正しい階層構造を構築。
-     */
-    const rebuildHierarchy = (selectedBlocks) => {
-        const childBlockIds = selectedBlocks.flatMap((block) =>
-            block.children.map((child) => child.id)
-        );
-        const filteredBlocks = selectedBlocks.filter(
-            (block) => !childBlockIds.includes(block.id)
-        );
-        return filteredBlocks;
+    // モーダルを閉じる
+    const handleModalClose = () => {
+        setIsModalOpen(false);
     };
 
     return (
         <>
-            <Components.FormattingToolbar.Button
-                mainTooltip="AIによる文章改善"
-                onClick={handleOpenModal} // モーダルを開く
-            >
+            <Components.FormattingToolbar.Button mainTooltip="AIによる文章改善" onClick={handleOpenModal}>
                 文章を改善する
             </Components.FormattingToolbar.Button>
 
@@ -108,18 +117,12 @@ export function AIEnhanceButton() {
                         <p>改善中...</p>
                     ) : (
                         <>
-                            <BlockNoteEditor initialContent={modalText ? modalText : null} />
+                            <BlockNoteEditor initialContent={modalText ?? null} />
                             <div className="mt-4 flex justify-end gap-2">
-                                <button
-                                    className="btn-secondary"
-                                    onClick={handleModalClose}
-                                >
+                                <button className="btn-secondary" onClick={handleModalClose}>
                                     キャンセル
                                 </button>
-                                <button
-                                    className="btn-primary"
-                                    onClick={handleYesClick}
-                                >
+                                <button className="btn-primary" onClick={handleYesClick}>
                                     置き換える
                                 </button>
                             </div>

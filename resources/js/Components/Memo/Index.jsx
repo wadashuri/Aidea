@@ -20,7 +20,6 @@ export default function IndexMemo() {
 
 function MemoListItem({ memo }) {
     const { IndexDBTitle } = useIndexedDB(memo.id);
-    console.log(IndexDBTitle);
 
     return (
         <Link href={route("memo.show", { memoId: memo.id })}>

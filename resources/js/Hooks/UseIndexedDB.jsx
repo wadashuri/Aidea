@@ -78,7 +78,6 @@ export const useIndexedDB = (defaultId = 1) => {
         const loadData = async () => {
             try {
                 const data = await fetchFromDB(defaultId);
-                console.log(data?.content);
                 setTitle(data?.title || null);
                 setContent(data?.content || null);
             } catch (err) {
