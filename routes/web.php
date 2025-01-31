@@ -19,19 +19,19 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
     // プロフィール
-    Route::group(['controller' => Controllers\ProfileController::class], function () {
-        Route::get('/profile', 'edit')->name('profile.edit');
-        Route::patch('/profile', 'update')->name('profile.update');
-        Route::delete('/profile', 'destroy')->name('profile.destroy');
+    Route::group(['prefix' => 'profile','controller' => Controllers\ProfileController::class], function () {
+        Route::get('/', 'edit')->name('profile.edit');
+        Route::patch('/', 'update')->name('profile.update');
+        Route::delete('/', 'destroy')->name('profile.destroy');
     });
 
     // メモ
-    Route::group(['controller' => Controllers\MemoController::class], function () {
-        Route::get('/memo', 'index')->name('memo.index');
-        Route::get('/memo/{memoId}', 'show')->name('memo.show');
-        Route::post('/memo/store', 'store')->name('memo.store');
-        Route::patch('/memo/{memoId}', 'update')->name('memo.update');
-        Route::delete('/memo/{memoId}', 'destroy')->name('memo.destroy');
+    Route::group(['prefix' => 'memos','controller' => Controllers\MemoController::class], function () {
+        Route::get('/', 'index')->name('memos.index');
+        Route::get('/{memoId}', 'show')->name('memos.show');
+        Route::post('/store', 'store')->name('memos.store');
+        Route::patch('/{memoId}', 'update')->name('memos.update');
+        Route::delete('/{memoId}', 'destroy')->name('memos.destroy');
     });
 
     // AI文章改善

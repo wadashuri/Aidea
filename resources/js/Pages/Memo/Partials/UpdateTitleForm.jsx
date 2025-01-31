@@ -27,7 +27,7 @@ export default function UpdateTitleForm({ memo }) {
     };
 
     const handleTitleBlur = () => {
-        patch(route('memo.update', { memoId: memo.data.id }), {
+        patch(route('memos.update', { memoId: memo.data.id }), {
             preserveScroll: true,
             preserveState: true,
         });

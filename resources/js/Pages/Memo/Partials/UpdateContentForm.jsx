@@ -33,7 +33,7 @@ export default function UpdateContentForm({ memo }) {
          */
         const clickedElement = event.relatedTarget;
         if(!clickedElement){
-            patch(route("memo.update", { memoId: memo.data.id }), {
+            patch(route("memos.update", { memoId: memo.data.id }), {
                 preserveScroll: true,
                 preserveState: true,
             });
