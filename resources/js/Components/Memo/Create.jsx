@@ -7,7 +7,7 @@ export default function CreateMemo() {
     const { post } = useForm();
 
     const handleCreateMemo = () => {
-        post(route('memo.store'));
+        post(route('memos.store'));
     };
 
     return (

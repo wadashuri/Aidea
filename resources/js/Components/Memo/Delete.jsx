@@ -5,13 +5,13 @@ import { useForm } from '@inertiajs/react';
 export default function DeleteMemo() {
 
     const { 
-        delete: destroy,
-     } = useForm({});
+        delete: destroy,    
+    } = useForm({});
 
     return (
         <DeleteLogo
         className="size-6"
-        onClick={() => destroy(route('memo.destroy', { memoId: route().params.memoId }))}
+        onClick={() => destroy(route('memos.destroy', { memoId: route().params.memoId }))}
         />
     );
 }

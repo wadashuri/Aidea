@@ -50,7 +50,7 @@ class MemoController extends Controller
     public function store(StoreUseCase $useCase): SymfonyResponse
     {
         $memo = $useCase->execute();
-        return Inertia::location(route('memo.show', ['memoId' => $memo['id']]));
+        return Inertia::location(route('memos.show', ['memoId' => $memo['id']]));
     }
 
     /**

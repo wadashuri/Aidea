@@ -4,7 +4,7 @@ import { Link } from '@inertiajs/react';
 import { useIndexedDB } from "@/Hooks/UseIndexedDB";
 
 export default function IndexMemo() {
-    const { data, loading, error } = UseFetchAll(route('memo.index'));
+    const { data, loading, error } = UseFetchAll(route('memos.index'));
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error.message}</p>;
@@ -22,7 +22,7 @@ function MemoListItem({ memo }) {
     const { IndexDBTitle } = useIndexedDB(memo.id);
 
     return (
-        <Link href={route("memo.show", { memoId: memo.id })}>
+        <Link href={route("memos.show", { memoId: memo.id })}>
             <li className="px-4 py-2 text-white hover:text-white hover:bg-gray-700">
                 {IndexDBTitle ? IndexDBTitle : memo.title || "新規メモ"}
             </li>
